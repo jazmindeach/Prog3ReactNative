@@ -13,7 +13,7 @@ class Login extends Component {
     }
 
 
-LoguearUsuario(mail, password){
+LoguearUsuario(email, pass){
     auth.signInWithEmailAndPassword(email, pass)
             .then( res => {
                 this.props.navigation.navigate("Home")
