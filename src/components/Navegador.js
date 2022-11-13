@@ -5,6 +5,7 @@ import Registro from '../screens/Registro';
 import Login from '../screens/Login';
 import Home from '../screens/Home';
 import React, { Component } from 'react';
+import CrearPosteo from '../screens/CrearPosteo';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ class Navegador extends Component {
                 <Stack.Screen name='Registro' component={Registro} options={{ headerShown: false }} />
                 <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />
+                <Stack.Screen name='CrearPosteo' component={CrearPosteo} options={{ headerShown: false }} />
             </Stack.Navigator>
 
         );

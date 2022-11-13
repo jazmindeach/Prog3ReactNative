@@ -47,7 +47,7 @@ class Home extends Component {
                     > 
                     
                 </FlatList>
-
+                <Text onPress={ () => this.props.navigation.navigate ("CrearPosteo")}> Crear un posteo </Text>
             </View>
 
         )
