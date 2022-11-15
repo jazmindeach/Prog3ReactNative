@@ -40,6 +40,8 @@ class Home extends Component {
                 <TouchableOpacity onPress={ () => this.desloguearse ()}>
                         <Text>Cerrar sesión</Text>
                     </TouchableOpacity>
+                <Text onPress={ () => this.props.navigation.navigate ("CrearPosteo")}> Crear un posteo </Text>
+                <Text onPress={ () => this.props.navigation.navigate ("MiPerfil")}> Ver mi perfil</Text>
                 <Text> Estos son tus posteos:</Text>
                 <FlatList data={this.state.post}
                     keyExtractor={(data)=> data.id}
@@ -47,7 +49,7 @@ class Home extends Component {
                     > 
                     
                 </FlatList>
-                <Text onPress={ () => this.props.navigation.navigate ("CrearPosteo")}> Crear un posteo </Text>
+                
             </View>
 
         )
