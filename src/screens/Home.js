@@ -35,8 +35,8 @@ class Home extends Component {
     render() {
         console.log(this.state.post)
         return (
-            <View>
-                <Text> Esta es la página Home</Text>
+            <View style={styles.container}>
+                <Text style={styles.title}> Home</Text>
                 <TouchableOpacity onPress={ () => this.desloguearse ()}>
                         <Text>Cerrar sesión</Text>
                     </TouchableOpacity>
@@ -56,6 +56,24 @@ class Home extends Component {
 
     }
 }
+
+const styles = StyleSheet.create ({
+    container: {
+        flex:1,
+        backgroundColor: 'rgb(007,134,255)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        spaceAround: 4,
+        textAlign: 'center',
+        fontSize: 24,
+        margin: 8,
+        alignItems: 'center',
+        
+    },
+})
+
 
 
 

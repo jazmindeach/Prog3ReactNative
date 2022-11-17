@@ -54,10 +54,10 @@ registrarUsuario(email,pass, userName, bio){
 
     render(){
         return(
-            <View>
-                <View> 
+            <View style={styles.inputs}>
+                <View>  
                     <Text> {this.state.errors}</Text>
-                    <TextInput 
+                    <TextInput style={styles.miniInput}
                         placeholder= 'Email'
                         keyboardType= 'email-address'
                         onChangeText={ 
@@ -68,7 +68,7 @@ registrarUsuario(email,pass, userName, bio){
                         value = {this.state.mail}
                         
                     />
-                    <TextInput 
+                    <TextInput style={styles.miniInput}
                         placeholder= 'Contraseña'
                         keyboardType= 'default'
                         secureTextEntry = {true}
@@ -76,14 +76,14 @@ registrarUsuario(email,pass, userName, bio){
                         value = {this.state.password}
                         
                     />
-                    <TextInput 
+                    <TextInput style={styles.miniInput}
                         placeholder= 'Nombre de Usuario'
                         keyboardType= 'default'
                         onChangeText={ texto => this.setState({user : texto})}
                         value = {this.state.user}
                         
                     />
-                    <TextInput 
+                    <TextInput style={styles.miniInput}
                         placeholder= 'Biografía'
                         keyboardType= 'default'
                         onChangeText={ texto => this.setState({descripción : texto})}
@@ -97,7 +97,7 @@ registrarUsuario(email,pass, userName, bio){
             {
                 this.state.mail =="" || this.state.password =="" || this.state.user == "" ? 
                     <TouchableOpacity>
-                        <Text>Registrarme</Text>
+                        <Text style={styles.register} >Registrarme</Text>
                     </TouchableOpacity>
                 :
                     <TouchableOpacity onPress={ () => this.registrarUsuario ( this.state.mail, this.state.password, this.state.user, this.state.descripción, this.state.foto)}>
@@ -114,6 +114,32 @@ registrarUsuario(email,pass, userName, bio){
         }
 }
 
+const styles = StyleSheet.create ({
+    inputs: {
+        flex:1,
+        backgroundColor: 'rgb(007,134,255)',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10,
+        padding: 10,
+       
+         
+    },
+    miniInput: {
+        backgroundColor: 'rgb(234,252,255)',
+        borderWidth: 1,
+        borderRadius:5,
+        padding: 6,
+        marginBottom: 7
+        
+    },
+    register: {
+        backgroundColor: 'rgb(500,252,255)',
+        padding: 6,
+        margin: 50
+     
+    }
 
+})
 
 export default Registro;
