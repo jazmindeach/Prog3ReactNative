@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
 import { ThemeProvider } from '@react-navigation/native';
+import Camara from '../components/Camara';
 
 class CrearPosteo extends Component {
     constructor() {
@@ -9,7 +10,23 @@ class CrearPosteo extends Component {
         this.state = {
             titulo:"", 
             descripcion:"", //estados, strings vacios
+            foto: "",
+            camara: false 
         }
+    }
+    habilitarCamara(){
+        this.setState({
+            camera: true
+        })
+        
+    }
+
+    onImageUpload(url) {
+        console.log(url)
+        this.setState({
+            foto: url,
+            camera: false
+        })
     }
 
     crearpost(){
@@ -20,7 +37,7 @@ class CrearPosteo extends Component {
             descripcion: this.state.descripcion,
             likes:[],
             comentarios:[],
-            foto:"",
+            foto:this.state.foto
         })
         .then(()=> { //por ser una promesa asincronica
             this.setState({
@@ -56,6 +73,12 @@ class CrearPosteo extends Component {
                         value = {this.state.descripcion}
                         
                     />
+                    <TouchableOpacity   onPress={()=> this.habilitarCamara()} >
+                    <Text>Agregar una foto al posteo</Text>
+                </TouchableOpacity>
+
+                 {this.state.camera? <Camara onImageUpload={(url)=> this.onImageUpload(url)}/>:<Text></Text>}
+            
                     {this.state.titulo.length ==0||this.state.descripcion==0 ? <TouchableOpacity> 
                         <Text> Crear tu posteo </Text>
                     </TouchableOpacity> : <TouchableOpacity onPress= {()=> this.crearpost()}>

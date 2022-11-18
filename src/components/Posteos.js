@@ -62,6 +62,10 @@ class Posteos extends Component {
         /*let {data} = item*/
         return (
             <View>
+                <Image
+                source={{uri:`${data.foto}`}}
+                style={{width:"100", flex:1, height: 200}}
+                />
                 <Text> Titulo: {data.titulo} </Text>
                 <Text> Descripcion: {data.descripcion} </Text>
                 <Text> Likes {data.likes.length} </Text>
