@@ -3,12 +3,15 @@ import { auth, db } from '../firebase/config';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import firebase from 'firebase';
 import "firebase/firestore"
+import Comentarios from './Comentarios';
 
 class Posteos extends Component {
     constructor(props) {
         super(props)
         this.state = {
             likeado: false,
+            comentarios: false,
+
 
         }
     }
@@ -54,6 +57,19 @@ class Posteos extends Component {
 
         
     }
+    verComentarios (){
+        this.setState({
+            comentarios: true
+
+        })
+    }
+
+    cerrarComentarios (){
+        this.setState({
+            comentarios: false
+
+        })
+    }
 
     render() { 
         console.log(this.props.data.data)
@@ -75,8 +91,10 @@ class Posteos extends Component {
                 </TouchableOpacity>:<TouchableOpacity onPress={()=> this.like()}> 
                     <Text> Darle like </Text>
                 </TouchableOpacity>}
-                
-
+                <TouchableOpacity onPress={()=> this.verComentarios()}> 
+                    <Text> Ver comentarios </Text>
+                </TouchableOpacity>
+                {this.state.comentarios? <View> <Comentarios cerrarComentario={()=>this.cerrarComentario()} /> </View> :<Text></Text>}
                 
             </View>
 
