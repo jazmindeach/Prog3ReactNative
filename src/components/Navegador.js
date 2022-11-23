@@ -9,6 +9,7 @@ import CrearPosteo from '../screens/CrearPosteo';
 import MiPerfil from '../screens/MiPerfil';
 import Menu from '../components/Menu';
 import Comentarios from '../screens/Comentarios';
+import Buscador from '../screens/Buscador';
 
 const Stack = createNativeStackNavigator();
 
