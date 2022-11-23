@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'reac
 import firebase from 'firebase';
 import "firebase/firestore"
 import Comentarios from '../screens/Comentarios';
+import {FontAwesome} from '@expo/vector-icons'
 
 class Posteos extends Component {
     constructor(props) {
@@ -87,9 +88,10 @@ class Posteos extends Component {
                 <Text> Likes {this.props.data.data.likes.length} </Text>
 
                 {this.state.likeado? <TouchableOpacity onPress={()=> this.like()}> 
-                    <Text> No me gusta mas </Text>
+                <FontAwesome name='heart' color='red' size={14} />
                 </TouchableOpacity>:<TouchableOpacity onPress={()=> this.like()}> 
-                    <Text> Darle like </Text>
+                <FontAwesome name='heart-o' color='red' size={14} />
+                    
                 </TouchableOpacity>}
                 <TouchableOpacity 
                     onPress={()=>{ this.props.navigation.navigate("Comentarios",{id: this.props.data.id})}}
