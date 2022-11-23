@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'reac
 import firebase from 'firebase';
 import "firebase/firestore"
 import Comentarios from '../screens/Comentarios';
-import {FontAwesome} from '@expo/vector-icons'
+import { FontAwesome } from '@expo/vector-icons'
 
 class Posteos extends Component {
     constructor(props) {
@@ -19,60 +19,60 @@ class Posteos extends Component {
 
     componentDidMount() {
         let likes = this.props.data.data.likes;
-        
-        if(likes.includes(auth.currentUser.email)
-        ){
+
+        if (likes.includes(auth.currentUser.email)
+        ) {
             this.setState({
                 likeado: true
             })
         }
-        else{
+        else {
             this.setState({
                 likeado: false
             })
         }
     }
 
-    like (){
+    like() {
         let posteo = db.collection("posteos").doc(this.props.data.id)
         if (this.state.likeado) {
             posteo.update({
                 likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
             })
-            .then(()=>{
-                this.setState({
-                    likeado: false,
+                .then(() => {
+                    this.setState({
+                        likeado: false,
+                    })
                 })
-            })
         }
-        else{
+        else {
             posteo.update({
                 likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
             })
-            .then(()=>{
-                this.setState({
-                    likeado: true,
+                .then(() => {
+                    this.setState({
+                        likeado: true,
+                    })
                 })
-            })
         }
 
-        
+
     }
-    verComentarios (){
+    verComentarios() {
         this.setState({
             comentarios: true
 
         })
     }
 
-    cerrarComentarios (){
+    cerrarComentarios() {
         this.setState({
             comentarios: false
 
         })
     }
 
-    render() { 
+    render() {
         // console.log(this.props.data)
         // let data = this.props.data.data  
         // console.log(data)
@@ -80,29 +80,29 @@ class Posteos extends Component {
         return (
             <View>
                 <Image
-                source={{uri:`${this.props.data.data.foto}`}}
-                style={{width:"100", flex:1, height: 200}}
+                    source={{ uri: `${this.props.data.data.foto}` }}
+                    style={{ width: "100", flex: 1, height: 200 }}
                 />
                 <Text> Titulo: {this.props.data.data.titulo} </Text>
                 <Text> Descripcion: {this.props.data.data.descripcion} </Text>
                 <Text> Likes {this.props.data.data.likes.length} </Text>
 
-                {this.state.likeado? <TouchableOpacity onPress={()=> this.like()}> 
-                <FontAwesome name='heart' color='red' size={14} />
-                </TouchableOpacity>:<TouchableOpacity onPress={()=> this.like()}> 
-                <FontAwesome name='heart-o' color='red' size={14} />
-                    
+                {this.state.likeado ? <TouchableOpacity onPress={() => this.like()}>
+                    <FontAwesome name='heart' color='red' size={14} />
+                </TouchableOpacity> : <TouchableOpacity onPress={() => this.like()}>
+                    <FontAwesome name='heart-o' color='red' size={14} />
+
                 </TouchableOpacity>}
-                <TouchableOpacity 
-                    onPress={()=>{ this.props.navigation.navigate("Comentarios",{id: this.props.data.id})}}
+                <TouchableOpacity
+                    onPress={() => { this.props.navigation.navigate("Comentarios", { id: this.props.data.id }) }}
                 >
-                <Text>Ver el comentario</Text> 
+                    <Text>Ver el comentario</Text>
                 </TouchableOpacity>
                 {/* <TouchableOpacity onPress={()=> this.verComentarios()}> 
                     <Text> Ver comentarios </Text>
                 </TouchableOpacity> */}
-                {this.state.comentarios? <View> <Comentarios cerrarComentario={()=>this.cerrarComentario()} /> </View> :<Text></Text>}
-                
+                {this.state.comentarios ? <View> <Comentarios cerrarComentario={() => this.cerrarComentario()} /> </View> : <Text></Text>}
+
             </View>
 
         )

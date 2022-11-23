@@ -51,7 +51,7 @@ class MiPerfil extends Component {
 
         return (
             <>
-                <View>
+                <View style={styles.perfil}>
 
                     {this.state.usuario[0]?.data.fotoPerfil != "" ? <Image
                         source={{ uri: `${this.state.usuario[0]?.data.fotoPerfil}` }}
@@ -62,16 +62,19 @@ class MiPerfil extends Component {
                         style={{ width: "100", flex: 1, height: 200 }}
                     />
 
-                    <Text> Bienvenido a tu perfil: {auth.currentUser.email} </Text>
-                    <Text>Tus posteos </Text>
-                    <Text> Tu nombre de usuario es:  {this.state.usuario[0]?.data.userName} </Text>
-                    <Text> Tu imágen es:  {this.state.usuario[0]?.data.fotoPerfil} </Text>
-                    <Text> Tu biografía es:  {this.state.usuario[0]?.data.bio} </Text>
-                    <Text> usuario activo desde:  {this.state.usuario[0]?.data.createdAt} </Text>
+                    <Text style={styles.campos}>  Bienvenido a tu perfil: {auth.currentUser.email} </Text>
+                    <Text style={styles.campos}>Tus posteos </Text>
+                    <Text style={styles.campos}> Tu nombre de usuario es:  {this.state.usuario[0]?.data.userName} </Text>
+                    <Text style={styles.campos}> Tu imágen es:  {this.state.usuario[0]?.data.fotoPerfil} </Text>
+                    <Text style={styles.campos}> Tu biografía es:  {this.state.usuario[0]?.data.bio} </Text>
+                    <Text style={styles.campos}> Usuario activo desde:  {this.state.usuario[0]?.data.createdAt} </Text>
+
+                    <TouchableOpacity onPress={() => this.signOut()}>
+                        <Text style={styles.boton}> Cerrar tu sesión</Text>
+
+                    </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => this.signOut()}>
-                    <Text style={styles.boton}> Cerrar tu sesión</Text>
-                </TouchableOpacity>
+
             </>
         )
 
@@ -87,7 +90,33 @@ const styles = StyleSheet.create({
         alignContent: "center",
         marginVertical: 10,
 
+    },
+
+
+    perfil: {
+        backgroundColor: 'rgb(007,134,255)',
+        alignItems: 'center',
+        height: "100%",
+        paddingBottom:500,
+    },
+
+    boton: {
+        backgroundColor: 'rgb(234,252,255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 6,
+        marginBottom: 7,
+        marginTop: 30,
+    },
+    campos: {
+        padding: "1%",
+        marginBottom:18,
+        borderRadius:10,
+        borderWidth:3,
+        width:"78%",
+        
     }
+
 })
 
 
