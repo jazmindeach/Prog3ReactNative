@@ -3,6 +3,7 @@ import { auth, db } from '../firebase/config';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
 import Posteos from '../components/Posteos'; 
 
+
 class Home extends Component {
     constructor() {
         super()

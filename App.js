@@ -3,6 +3,7 @@ import Navegador from "./src/components/Navegador"
 import {NavigationContainer} from "@react-navigation/native"
 
 
+
 function App() {
   return (
     <NavigationContainer>
