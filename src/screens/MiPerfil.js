@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
+import MyPost from '../components/MyPost';
 
 class MiPerfil extends Component {
     constructor() {
         super()
         this.state = {
-            usuario: []
+            usuario: [],
+            post: []
         }
     }
 
@@ -25,7 +27,7 @@ class MiPerfil extends Component {
             })
         })
 
-        db.collection("posteos").where('creador', '==', auth.currentUser.email).onSnapshot((docs) => {
+        db.collection("posteos").where('user', '==', auth.currentUser.email).onSnapshot((docs) => {
             let posteos = []
             docs.forEach(doc => {
                 posteos.push({
@@ -47,10 +49,11 @@ class MiPerfil extends Component {
 
 
     render() {
-        console.log(this.state.usuario[0]?.data.fotoPerfil)
+        console.log(this.state.post)
 
         return (
             <>
+
                 <View style={styles.perfil}>
 
                     {this.state.usuario[0]?.data.fotoPerfil != "" ? <Image
@@ -63,16 +66,26 @@ class MiPerfil extends Component {
                     />
 
                     <Text style={styles.campos}>  Bienvenido a tu perfil: {auth.currentUser.email} </Text>
-                    <Text style={styles.campos}>Tus posteos </Text>
+                    <Text style={styles.campos}>Tus posteos: {this.state.post.length} </Text>
                     <Text style={styles.campos}> Tu nombre de usuario es:  {this.state.usuario[0]?.data.userName} </Text>
                     <Text style={styles.campos}> Tu imágen es:  {this.state.usuario[0]?.data.fotoPerfil} </Text>
                     <Text style={styles.campos}> Tu biografía es:  {this.state.usuario[0]?.data.bio} </Text>
-                    <Text style={styles.campos}> Usuario activo desde:  {this.state.usuario[0]?.data.createdAt} </Text>
+                    <Text style={styles.campos}> Usuario activo desde:  {auth.currentUser.metadata.creationTime} </Text>
 
                     <TouchableOpacity onPress={() => this.signOut()}>
                         <Text style={styles.boton}> Cerrar tu sesión</Text>
 
                     </TouchableOpacity>
+                    <Text> Estos son los posteos:</Text>
+
+                    <FlatList data={this.state.post}
+                        keyExtractor={(data) => data.id}
+                        renderItem={({ item }) => <MyPost data={item}{...this.props} />}
+                    >
+
+                    </FlatList>
+
+
                 </View>
 
             </>
@@ -97,7 +110,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(007,134,255)',
         alignItems: 'center',
         height: "100%",
-        paddingBottom:500,
+        paddingBottom: 500,
     },
 
     boton: {
@@ -110,11 +123,11 @@ const styles = StyleSheet.create({
     },
     campos: {
         padding: "1%",
-        marginBottom:18,
-        borderRadius:10,
-        borderWidth:3,
-        width:"78%",
-        
+        marginBottom: 18,
+        borderRadius: 10,
+        borderWidth: 3,
+        width: "78%",
+
     }
 
 })

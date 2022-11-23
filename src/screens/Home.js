@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
-import Posteos from '../components/Posteos'; 
+import Posteos from '../components/Posteos';
 
 
 class Home extends Component {
     constructor() {
         super()
         this.state = {
-                post: [],
-                loaded: false
-            
+            post: [],
+            loaded: false
+
 
         }
     }
@@ -25,40 +25,30 @@ class Home extends Component {
                 })
             });
             this.setState({
-                post:posteos,
+                post: posteos,
                 loaded: true
             })
         })
-    }
-
-    desloguearse() {
-        auth.signOut()
-        this.props.navigation.navigate("Registro")
     }
 
     render() {
         console.log(this.state.post)
         return (
             <>
-            { this.state.cargado == false?<ActivityIndicator size="large" color="black" />: 
-            <View style={styles.container}>
-                
-                <Text style={styles.title}> Home</Text>
-                <TouchableOpacity onPress={() => this.desloguearse()}>
-                    <Text>Cerrar sesión</Text>
-                </TouchableOpacity>
-                <Text onPress={() => this.props.navigation.navigate("Crear Posteo")}> Crear un posteo </Text>
-                <Text onPress={() => this.props.navigation.navigate("Mi Perfil")}> Ver mi perfil</Text>
-                <Text> Estos son tus posteos:</Text>
-                <FlatList data={this.state.post}
-                    keyExtractor={(data) => data.id}
-                    renderItem={({ item }) => <Posteos data={item}{...this.props} />}
-                >
+                {this.state.cargado == false ? <ActivityIndicator size="large" color="black" /> :
+                    <View style={styles.container}>
 
-                </FlatList>
+                        <Text style={styles.title}> Home</Text>
+                        <Text> Estos son los posteos:</Text>
+                        <FlatList data={this.state.post}
+                            keyExtractor={(data) => data.id}
+                            renderItem={({ item }) => <Posteos data={item}{...this.props} />}
+                        >
 
-            </View>
-            } </>
+                        </FlatList>
+
+                    </View>
+                } </>
         )
 
     }
@@ -70,7 +60,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgb(007,134,255)',
         alignItems: 'center',
         justifyContent: 'center',
-        
+
     },
     title: {
         spaceAround: 4,
@@ -78,7 +68,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         margin: 8,
         alignItems: 'center',
-        
+
 
     },
 })
