@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
 import Posteos from '../components/Posteos'; 
 
 class Home extends Component {
     constructor() {
         super()
         this.state = {
-                post: []
+                post: [],
+                loaded: false
+            
 
         }
     }
@@ -22,7 +24,8 @@ class Home extends Component {
             })
             });
             this.setState({
-                post:posteos
+                post:posteos,
+                loaded: true
             })
         })
     }
@@ -35,7 +38,10 @@ class Home extends Component {
     render() {
         console.log(this.state.post)
         return (
+            <>
+            { this.state.cargado == false?<ActivityIndicator size="large" color="black" />: 
             <View style={styles.container}>
+                
                 <Text style={styles.title}> Home</Text>
                 <TouchableOpacity onPress={ () => this.desloguearse ()}>
                         <Text>Cerrar sesión</Text>
@@ -51,7 +57,7 @@ class Home extends Component {
                 </FlatList>
                 
             </View>
-
+            } </>
         )
 
     }
