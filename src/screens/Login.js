@@ -42,7 +42,7 @@ LoguearUsuario(email, pass){
                         value = {this.state.mail}
                         
                     />
-                    <TextInput style={styles.miniInput}
+                    <TextInput style={styles.styleContra}
                         placeholder= 'Contraseña'
                         keyboardType= 'default'
                         secureTextEntry = {true}
@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
         padding: 6,
         marginBottom: 7
     },
+    styleContra:{backgroundColor: 'rgb(284,252,255)',
+    borderWidth: 1,
+    borderRadius:5,
+    padding: 6,
+    marginBottom: 0},
     title: {
         spaceAround: 4,
         textAlign: 'center',
@@ -115,6 +120,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         
     }
+   
 })
 
 export default Login;

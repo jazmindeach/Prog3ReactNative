@@ -96,8 +96,10 @@ class Comentarios extends Component {
                 : <View>
                 <Text>Aún no hay comentarios. ¡Sé el primero en comentar!</Text>
             </View>}
-                
+            <Text onPress={ () => this.props.navigation.navigate ("Navegador")} style={styles.botonx}>Volver al inicio</Text>
             </Modal>
+
+            
 
         )
 
