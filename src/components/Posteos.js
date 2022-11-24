@@ -78,7 +78,7 @@ class Posteos extends Component {
         // console.log(data)
         // /*let {data} = item*/
         return (
-            <View>
+            <View style={styles.posteos}>
                 <Image
                     source={{ uri: `${this.props.data.data.foto}` }}
                     style={{ width: "100", flex: 1, height: 200 }}
@@ -116,7 +116,16 @@ class Posteos extends Component {
 
     }
 }
-
+const styles = StyleSheet.create({
+    posteos :{
+        marginTop:20,
+        paddingHorizontal: 10,
+        borderStyle:"solid",
+        borderWidth:1,
+        borderColor:"black",
+        backgroundColor: "rgba(176, 136, 135, 0.6)"
+    } 
+})
 
 
 

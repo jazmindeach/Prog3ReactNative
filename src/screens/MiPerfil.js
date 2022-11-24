@@ -8,7 +8,9 @@ class MiPerfil extends Component {
         super()
         this.state = {
             usuario: [],
-            post: []
+            post: [],
+            borrar: false,
+            errorAlEliminar: false
         }
     }
 
@@ -46,11 +48,21 @@ class MiPerfil extends Component {
         this.props.navigation.navigate('Login')
     }
 
-
+    eliminarPerfil(){
+        auth.currentUser.delete()
+        .then(()=> {
+            this.props.navigation.navigate('Registro')
+        })
+        .catch(()=>{
+            this.setState({
+                errorAlEliminar: true
+            })
+        })
+    }
 
     render() {
         console.log(this.state.post)
-
+        console.log(auth.currentUser.email)
         return (
             <>
 
@@ -76,14 +88,22 @@ class MiPerfil extends Component {
                         <Text style={styles.boton}> Cerrar tu sesión</Text>
 
                     </TouchableOpacity>
-                    <Text> Estos son los posteos:</Text>
+                    <Text>  Estos son los posteos:</Text>
 
                     <FlatList data={this.state.post}
                         keyExtractor={(data) => data.id}
                         renderItem={({ item }) => <MyPost data={item}{...this.props} />}
-                    >
+                    />
 
-                    </FlatList>
+
+                    <TouchableOpacity onPress={() => this.setState({ borrar: true })}> <Text> Eliminar perfil </Text> </TouchableOpacity>
+                    {this.state.borrar == false ? <Text> </Text> : <> <Text> Estas seguro que quieres eliminar el perfil, es permanente!</Text>
+                        <TouchableOpacity onPress={() => this.eliminarPerfil()}> <Text> Si eliminar </Text> </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({ borrar: false })}> <Text> No eliminar </Text> </TouchableOpacity> </>}
+
+                    
+                    {this.state.errorAlEliminar == false ? <Text> </Text> :  <Text> Esta es una operación sensible, volvé a iniciar sesión para eliminar tu perfil</Text>}
+
 
 
                 </View>

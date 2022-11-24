@@ -59,7 +59,7 @@ class Login extends Component {
                             </TouchableOpacity>
                             :
                             <TouchableOpacity onPress={() => this.LoguearUsuario(this.state.mail, this.state.password)}>
-                                <Text>Loguearme</Text>
+                                <Text style={styles.loguearme} >Loguearme</Text>
                             </TouchableOpacity>
                     }
                     <Text style={styles.noTengoCuenta} onPress={() => this.props.navigation.navigate("Registro")}> No tengo cuenta, registrarme </Text>
@@ -103,26 +103,37 @@ const styles = StyleSheet.create({
         fontSize: 24,
         margin: 8,
         alignItems: 'center',
+        marginBottom: 40,
 
     },
     log: {
         spaceAround: 4,
         textAlign: 'center',
-        fontSize: 24,
-        margin: 8,
-        borderRadius: 4,
-        padding: 7,
-        backgroundColor: 'rgb(100,105,105)',
+        fontSize: 15,
+        /*margin: 8,*/
+        borderRadius: 12,
         margin: 50,
         alignItems: 'center',
+        backgroundColor: 'rgb(500,252,255)',
+        padding: 6,
+        margin: 50,
+        borderWidth: 1
 
     },
 
     noTengoCuenta: {
         alignItems: 'center',
+        borderRadius: 1,
+    },
 
+    loguearme: {
+        backgroundColor: 'rgb(234,252,255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 9,
+        marginBottom: 7,
+    
     }
-
 })
 
 export default Login;

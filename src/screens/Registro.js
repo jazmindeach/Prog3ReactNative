@@ -112,7 +112,7 @@ class Registro extends Component {
                         value={this.state.descripción}
 
                     />
-                    <TouchableOpacity onPress={() => this.habilitarCamara()} >
+                    <TouchableOpacity style={styles.miniInput} onPress={() => this.habilitarCamara()} >
                         <Text>Agregar una foto de perfil</Text>
                     </TouchableOpacity>
 

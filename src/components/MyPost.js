@@ -13,7 +13,7 @@ class MyPost extends Component {
             likeado: false,
             comentarios: false,
             eliminar: false
-
+            
 
         }
     }
@@ -122,11 +122,13 @@ class MyPost extends Component {
                 </FlatList>
 
                 <TouchableOpacity onPress={()=> this.setState({borrar: true})}> <Text> Eliminar </Text> </TouchableOpacity>
-                {this.state.eliminar==false? <Text> </Text>:<> <Text> Estas seguro que quieres eliminar el posteo, es permanente!</Text>
+                {this.state.borrar==false? <Text> </Text>:<> <Text> Estas seguro que quieres eliminar el posteo, es permanente!</Text>
                 <TouchableOpacity onPress={()=> this.eliminarPost()}> <Text> Si eliminar </Text> </TouchableOpacity>
                 <TouchableOpacity onPress={()=> this.setState({borrar: false})}> <Text> No eliminar </Text> </TouchableOpacity> </>}
                     
-
+                
+               
+                    
 
             </View>
 
