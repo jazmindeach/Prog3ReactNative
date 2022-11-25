@@ -53,6 +53,7 @@ class Buscador extends Component {
     render() {
         return (
             <>
+            <View style={styles.container}> 
             <Text>Pagina de busqueda</Text>
             <TextInput style={styles.miniInput}
                         placeholder= 'Buscar usuario'
@@ -104,7 +105,9 @@ class Buscador extends Component {
                 
                 
                 </>:<Text></Text>}
+                </View>
              </>
+             
         )
 
     }
@@ -132,6 +135,8 @@ const styles = StyleSheet.create ({
         padding: 6,
         marginBottom: 7
     },
+    
+
 })
 
 
