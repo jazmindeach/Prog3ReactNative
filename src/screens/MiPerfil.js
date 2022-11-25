@@ -27,7 +27,7 @@ class MiPerfil extends Component {
                 })
             })
             this.setState({
-                usuario: usuarios[0].data,
+                usuario: usuarios,
                 idUsuario: usuarios[0].id
             })
         })
@@ -64,8 +64,8 @@ class MiPerfil extends Component {
     }
 
     render() {
-        console.log(this.state.post)
-        console.log(auth.currentUser.email)
+        console.log(this.state.usuario[0]?.data)
+
         return (
             <>
 
@@ -75,15 +75,10 @@ class MiPerfil extends Component {
                         source={{ uri: `${this.state.usuario[0]?.data.fotoPerfil}` }}
                         style={styles.image}
                     /> : <Text> No hay foto perfil </Text>}
-                    <Image
-                        source={{ uri: `${this.state.usuario[0]?.data.fotoPerfil}` }}
-                        style={{ width: "100", flex: 1, height: 200 }}
-                    />
 
                     <Text style={styles.campos}>  Bienvenido a tu perfil: {auth.currentUser.email} </Text>
                     <Text style={styles.campos}>Tus posteos: {this.state.post.length} </Text>
                     <Text style={styles.campos}> Tu nombre de usuario es:  {this.state.usuario[0]?.data.userName} </Text>
-                    <Text style={styles.campos}> Tu imágen es:  {this.state.usuario[0]?.data.fotoPerfil} </Text>
                     <Text style={styles.campos}> Tu biografía es:  {this.state.usuario[0]?.data.bio} </Text>
                     <Text style={styles.campos}> Usuario activo desde:  {auth.currentUser.metadata.creationTime} </Text>
 
@@ -124,12 +119,6 @@ const styles = StyleSheet.create({
         height:300,
         alignContent:"center",
         marginVertical:10,
-        flex: 1,
-        width: "100%",
-        height: 1000,
-        alignContent: "center",
-        marginVertical: 10,
-
     },
 
 
