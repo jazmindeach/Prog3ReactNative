@@ -1,104 +1,98 @@
-import React, {Component} from 'react';
-import {Camera } from 'expo-camera';
-import {auth, db} from '../firebase/config';
-import {storage} from '../firebase/config';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native'
+import React, { Component } from 'react'
+import { Camera } from 'expo-camera'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { storage } from '../firebase/config'
 
-class Camara extends Component{
-    constructor(props){
-        super(props);
+
+class Camara extends Component {
+    constructor(props) {
+        super(props)
+        this.metodosCamara = null
         this.state = {
-            permisos: false,
-            mostrarCamera: true,
-            urlDos:''
-       }
-
-        this.metodosCamara = ""
+            mostrarCamara: false,
+            fotoUri: ''
+        }
     }
 
-    componentDidMount(){
-      
+    componentDidMount() {
         Camera.requestCameraPermissionsAsync()
-            .then( () =>   { this.setState({
-                permisos: true
-            })})
-        
-            .catch( e => console.log(e))
-    }
-
-    takePicture(){
-     
-        this.metodosCamara.takePictureAsync()
-            .then( foto => {
+            .then(() => {
                 this.setState({
-                    urlDos: foto.uri,
-                    mostrarCamera: false
+                    mostrarCamara: true
                 })
             })
-            .catch( e => console.log(e))
+            .catch(err => console.log(err))
     }
 
-    
-    cancelar(){
-        
-        this.setState({
-            urlDos: '',
-            mostrarCamera: true
-        })
+    tomarFoto() {
+        this.metodosCamara.takePictureAsync()
+            .then(foto => this.setState({
+                fotoUri: foto.uri,
+                mostrarCamara: false
+            }))
+            .catch(err => console.log(err))
     }
-    
-    aceptar(){
-        fetch(this.state.urlDos)
-    .then(res => res.blob())
-            .then( img => { 
-           
-                const refStorage = storage.ref(`fotos/${Date.now()}.jpg`);
-                refStorage.put(img)
-                    .then(()=>{
-                        refStorage.getDownloadURL() 
-                        .then( url => this.props.onImageUpload(url))
+
+    aceptarImagen() {
+        fetch(this.state.fotoUri)
+            .then(imagenEnBinario => imagenEnBinario.blob())
+            .then(imagen => {
+                const ref = storage.ref(`fotos/${Date.now()}.jpg`)
+                ref.put(imagen)
+                    .then(() => {
+                        ref.getDownloadURL()
+                            .then((url) => this.props.onImageUpload(url))
+                            .catch(err => console.log(err))
                     })
+
             })
-            .catch(e => console.log(e))
+            .catch(err => console.log(err))
     }
-    render(){
-        return(
-            <View>
-            {
-                this.state.permisos ? 
-                this.state.mostrarCamera ?
-                    <View style={styles.cuerpoImagen}>
-                        <Camera
-                            style={styles.cuerpoImagen}
-                            type = {Camera.Constants.Type.front}
-                            ref={metodosCamara => this.metodosCamara = metodosCamara }
-                        />
-                        <TouchableOpacity style={styles.boton} onPress={()=>this.takePicture()}>
-                            <Text style= {styles.boton}>Sacarte una foto</Text>
-                        </TouchableOpacity>
-                    </View>
-                :
-                <View>
-                        <TouchableOpacity style={styles.boton} onPress={()=>this.aceptar()}>
-                            <Text style= {styles.boton}>Aceptar</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.boton} onPress={()=>this.cancelar()}>
-                            <Text style= {styles.boton}>Cancelar</Text>
-                        </TouchableOpacity>
-                        <Image 
-                            style={styles.preview}
-                            source={{uri: this.state.urlDos}}
-                            resizeMode='cover'
-                        />
-                    </View>
-                :
-                    <Text>No hay permisos otorgados</Text>
-            }
+
+    rechazarImagen() {
+        this.setState({ mostrarCamara: true })
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                {
+                    this.state.mostrarCamara ?
+                        <>
+                            <Camera
+                                style={styles.camarabody}
+                                type={Camera.Constants.Type.back}
+                                ref={metodos => this.metodosCamara = metodos}
+                            />
+                            <TouchableOpacity onPress={() => this.tomarFoto()}>
+                                <Text>Tomar foto</Text>
+                            </TouchableOpacity>
+                        </>
+                        : this.state.mostrarCamara === false && this.state.fotoUri != '' ?
+                            <View>
+                                <Image
+                                    source={{ uri: this.state.fotoUri }}
+                                    style={styles.image}
+                                />
+                                <TouchableOpacity onPress={() => this.aceptarImagen()}>
+                                    <Text>
+                                        Aceptar imagen
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.rechazarImagen()}>
+                                    <Text>
+                                        Rechazar imagen
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            : <Text>No me has dado permisos para mostrar la foto</Text>
+                }
             </View>
         )
     }
-
 }
+
 const styles = StyleSheet.create({
     cuerpoImagen: {
         height: '80vh',
@@ -118,8 +112,16 @@ const styles = StyleSheet.create({
         height: '80vh',
         width: '80vw',
     },
+    container: {
+        flex: 1
+    },
+    camarabody: {
+        height: 500
+    },
+    image: {
+        height: 200
+    }
 
 }) 
-
 
 export default Camara

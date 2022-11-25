@@ -21,7 +21,8 @@ export default function Menu() {
           tabBarIcon: () => <FontAwesome name='user' size={24} color='black'/>
           }}/>
           
-          <Tab.Screen name= "Buscador" component={Buscador} /> 
+          <Tab.Screen name= "Buscador" component={Buscador} options = {{ headerShown: false , tabBarIcon: () => <FontAwesome name='search' size={24} color='black'/>}} /> 
 
         </Tab.Navigator>
-    )}
+    )
+}

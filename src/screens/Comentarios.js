@@ -8,8 +8,8 @@ class Comentarios extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            comentario:"",
-            comentarios: [], 
+            comentario: "",
+            comentarios: [],
             user: {},
         }
     }
@@ -17,25 +17,26 @@ class Comentarios extends Component {
         db.collection('posteos').doc(this.props.route.params.id).onSnapshot(doc=>{ // doc que le paso por props desde posteos
   
             this.setState({
-                loading:false,
+                loading: false,
                 comentarios: doc.data().comentarios
             })
         })
         db.collection('users')
-        .where('owner', '==', auth.currentUser.email)
-        .onSnapshot(docs=>{
-            let user = {};
-            docs.forEach(doc=>{
-            user = ( {
-                id:doc.id, 
-                data:doc.data()})
-        })
-            this.setState({
-            user: user,
+            .where('owner', '==', auth.currentUser.email)
+            .onSnapshot(docs => {
+                let user = {};
+                docs.forEach(doc => {
+                    user = ({
+                        id: doc.id,
+                        data: doc.data()
+                    })
+                })
+                this.setState({
+                    user: user,
+                })
             })
-        })
     }
-    comentar(){
+    comentar() {
         if (this.state.comentario == '') {
             return
         } else {
@@ -47,15 +48,15 @@ class Comentarios extends Component {
                     createdAt: Date.now()
                 })
             })
-            .then(() => {
-                this.setState({
-                    comentario: '',
+                .then(() => {
+                    this.setState({
+                        comentario: '',
+                    })
                 })
-            })
-            .catch(err => console.log(err))
+                .catch(err => console.log(err))
         }
     }
-    cerrarComentario(){
+    cerrarComentario() {
         this.props.navigation.navigate("Home")
 
     }
@@ -66,49 +67,49 @@ class Comentarios extends Component {
                 <TextInput style={styles.input}
                     keyboardType="default"
                     placeholder="Escriba un comentario"
-                    onChangeText={text => this.setState({comentario:text})}
+                    onChangeText={text => this.setState({ comentario: text })}
                     value={this.state.comentario}
 
                 />
 
-                {this.state.comentario.length==0?
+                {this.state.comentario.length == 0 ?
                     <TouchableOpacity style={styles.touchable2}>
                         <Text style={styles.texto}>Escribir comentario</Text>
-                    </TouchableOpacity>:
-                    <TouchableOpacity style={styles.touchable} onPress={()=> this.comentar(this.state.comentario)}>
+                    </TouchableOpacity> :
+                    <TouchableOpacity style={styles.touchable} onPress={() => this.comentar(this.state.comentario)}>
                         <Text style={styles.texto}>Escribir comentario</Text>
                     </TouchableOpacity>
                 }
-                <TouchableOpacity style={styles.touchable} onPress={()=> this.cerrarComentario()}>
-                        <Text style={styles.texto}>Cerrar comentarios</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styles.touchable} onPress={() => this.cerrarComentario()}>
+                    <Text style={styles.texto}>Cerrar comentarios</Text>
+                </TouchableOpacity>
                 <Text style={styles.title}> Estos son los comentarios del posteo</Text>
                 {this.state.comentarios.length ?
-                <FlatList data={this.state.comentarios}
-                    keyExtractor={(data)=> data.createdAt}
-                    renderItem={({item})=> 
-                <View> <Text ><strong>{item.owner}</strong></Text>
-                <Text>{item.text}</Text></View>
-                }
-                    > 
-                </FlatList>
-                : <View>
-                <Text>Aún no hay comentarios. ¡Sé el primero en comentar!</Text>
-            </View>}
-            <Text onPress={ () => this.props.navigation.navigate ("Navegador")} style={styles.botonx}>Volver al inicio</Text>
+                    <FlatList data={this.state.comentarios}
+                        keyExtractor={(data) => data.createdAt}
+                        renderItem={({ item }) =>
+                            <View> <Text ><strong>{item.owner}</strong></Text>
+                                <Text>{item.text}</Text></View>
+                        }
+                    >
+                    </FlatList>
+                    : <View>
+                        <Text>Aún no hay comentarios. ¡Sé el primero en comentar!</Text>
+                    </View>}
+                <Text onPress={() => this.props.navigation.navigate("Navegador")} style={styles.botonx}>Volver al inicio</Text>
             </Modal>
 
-            
+
 
         )
 
     }
 }
 
-const styles = StyleSheet.create ({
-    Container:{ 
+const styles = StyleSheet.create({
+    Container: {
         width: "100%",
-        borderColor:"black",
+        borderColor: "black",
     }
 })
 

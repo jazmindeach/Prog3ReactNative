@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { auth, db } from '../firebase/config';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList} from 'react-native';
-import Posteos from '../components/Posteos';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, FlatList } from 'react-native';
+import MyPost from '../components/MyPost';
 
 class MiPerfil extends Component {
     constructor(props) {
@@ -9,7 +9,9 @@ class MiPerfil extends Component {
         this.state = {
             usuario: [],
             post: [],
-            idUsuario: ""
+            idUsuario: "",
+            borrar: false,
+            errorAlEliminar: false
         }
     }
 
@@ -30,8 +32,7 @@ class MiPerfil extends Component {
             })
         })
 
-        db.collection("posteos").where('creador', '==', auth.currentUser.email).onSnapshot(
-            (docs) => {
+        db.collection("posteos").where('user', '==', auth.currentUser.email).onSnapshot((docs) => {
             let posteos = []
             docs.forEach(doc => {
                 posteos.push({
@@ -50,44 +51,66 @@ class MiPerfil extends Component {
         this.props.navigation.navigate('Login')
     }
 
+    eliminarPerfil(){
+        auth.currentUser.delete()
+        .then(()=> {
+            this.props.navigation.navigate('Registro')
+        })
+        .catch(()=>{
+            this.setState({
+                errorAlEliminar: true
+            })
+        })
+    }
+
     render() {
-    console.log(this.state.usuario.fotoPerfil)
+        console.log(this.state.post)
+        console.log(auth.currentUser.email)
         return (
             <>
-                <View>
-                <View>
-                    {
-                    this.state.usuario.fotoPerfil != "" ? 
-                    <Image
-                        source={{ uri: this.state.usuario.fotoPerfil}}
-                        style={styles.image}
-                        resizeMode="contain"
-                    /> 
-                    : 
-                    <Text> No hay foto perfil </Text>
-                    }
-                     </View>
-                    
-                    <Text> Bienvenido a tu perfil: {this.state.usuario.mail}</Text>
-                    <Text> Tu nombre de usuario es:  {this.state.usuario.userName} </Text>
-                    <Text> Tu biografía es:  {this.state.usuario.bio} </Text>
-                    <Text> usuario activo desde:  {this.state.usuario[0]?.data.createdAt} </Text>
-                </View>
-                <TouchableOpacity onPress={() => this.signOut()}>
-                    <Text style={styles.boton}> Cerrar tu sesión</Text>
-                </TouchableOpacity>
 
-                {this.state.post.length !== 0 ?
-                        <FlatList
-                            data={this.state.post}
-                            keyExtractor={onePost => onePost.data.createdAt.toString()}
-                            renderItem={({ item }) =>
-                                <Posteos posteoData={item} navigation={this.props.navigation} />
-                            }
-                        />
-                        :
-                        <Text style={styles.aviso}> Aun no hay publicaciones</Text>
-                    }
+                <View style={styles.perfil}>
+
+                    {this.state.usuario[0]?.data.fotoPerfil != "" ? <Image
+                        source={{ uri: `${this.state.usuario[0]?.data.fotoPerfil}` }}
+                        style={styles.image}
+                    /> : <Text> No hay foto perfil </Text>}
+                    <Image
+                        source={{ uri: `${this.state.usuario[0]?.data.fotoPerfil}` }}
+                        style={{ width: "100", flex: 1, height: 200 }}
+                    />
+
+                    <Text style={styles.campos}>  Bienvenido a tu perfil: {auth.currentUser.email} </Text>
+                    <Text style={styles.campos}>Tus posteos: {this.state.post.length} </Text>
+                    <Text style={styles.campos}> Tu nombre de usuario es:  {this.state.usuario[0]?.data.userName} </Text>
+                    <Text style={styles.campos}> Tu imágen es:  {this.state.usuario[0]?.data.fotoPerfil} </Text>
+                    <Text style={styles.campos}> Tu biografía es:  {this.state.usuario[0]?.data.bio} </Text>
+                    <Text style={styles.campos}> Usuario activo desde:  {auth.currentUser.metadata.creationTime} </Text>
+
+                    <TouchableOpacity onPress={() => this.signOut()}>
+                        <Text style={styles.boton}> Cerrar tu sesión</Text>
+
+                    </TouchableOpacity>
+                    <Text>  Estos son los posteos:</Text>
+
+                    <FlatList data={this.state.post}
+                        keyExtractor={(data) => data.id}
+                        renderItem={({ item }) => <MyPost data={item}{...this.props} />}
+                    />
+
+
+                    <TouchableOpacity onPress={() => this.setState({ borrar: true })}> <Text> Eliminar perfil </Text> </TouchableOpacity>
+                    {this.state.borrar == false ? <Text> </Text> : <> <Text> Estas seguro que quieres eliminar el perfil, es permanente!</Text>
+                        <TouchableOpacity onPress={() => this.eliminarPerfil()}> <Text> Si eliminar </Text> </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({ borrar: false })}> <Text> No eliminar </Text> </TouchableOpacity> </>}
+
+                    
+                    {this.state.errorAlEliminar == false ? <Text> </Text> :  <Text> Esta es una operación sensible, volvé a iniciar sesión para eliminar tu perfil</Text>}
+
+
+
+                </View>
+
             </>
         )
 
@@ -101,7 +124,39 @@ const styles = StyleSheet.create({
         height:300,
         alignContent:"center",
         marginVertical:10,
+        flex: 1,
+        width: "100%",
+        height: 1000,
+        alignContent: "center",
+        marginVertical: 10,
+
+    },
+
+
+    perfil: {
+        backgroundColor: 'rgb(007,134,255)',
+        alignItems: 'center',
+        height: "100%",
+        paddingBottom: 500,
+    },
+
+    boton: {
+        backgroundColor: 'rgb(234,252,255)',
+        borderWidth: 1,
+        borderRadius: 5,
+        padding: 6,
+        marginBottom: 7,
+        marginTop: 30,
+    },
+    campos: {
+        padding: "1%",
+        marginBottom: 18,
+        borderRadius: 10,
+        borderWidth: 3,
+        width: "78%",
+
     }
+
 })
 
 

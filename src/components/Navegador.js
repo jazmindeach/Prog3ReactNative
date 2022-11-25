@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 
 
 class Navegador extends Component {
-   
+
     render() {
         return (
 
@@ -24,7 +24,7 @@ class Navegador extends Component {
                 <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
                 <Stack.Screen name='Menu' component={Menu} options={{ headerShown: false }} />
                 <Stack.Screen name='Comentarios' component={Comentarios} options={{ headerShown: false }} />
-                
+
             </Stack.Navigator>
 
         );
