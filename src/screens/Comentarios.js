@@ -14,8 +14,8 @@ class Comentarios extends Component {
         }
     }
     componentDidMount(){
-        db.collection('posteos').doc(this.props.route.params.id).onSnapshot(doc=>{
- 
+        db.collection('posteos').doc(this.props.route.params.id).onSnapshot(doc=>{ // doc que le paso por props desde posteos
+  
             this.setState({
                 loading:false,
                 comentarios: doc.data().comentarios
@@ -78,7 +78,6 @@ class Comentarios extends Component {
                     <TouchableOpacity style={styles.touchable} onPress={()=> this.comentar(this.state.comentario)}>
                         <Text style={styles.texto}>Escribir comentario</Text>
                     </TouchableOpacity>
-
                 }
                 <TouchableOpacity style={styles.touchable} onPress={()=> this.cerrarComentario()}>
                         <Text style={styles.texto}>Cerrar comentarios</Text>

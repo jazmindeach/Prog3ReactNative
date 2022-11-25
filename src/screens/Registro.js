@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {auth, db} from '../firebase/config';
-import {View, Text, StyleSheet, TextInput, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ViewBase} from 'react-native';
 import Camara from '../components/Camara';
 
 class Registro extends Component {
@@ -13,7 +13,7 @@ class Registro extends Component {
             descripción: "",
             errores: "",
             foto: "",
-            camara: false
+            mostrarCamera: false
         }
     }
 
@@ -25,23 +25,18 @@ class Registro extends Component {
         })
     }
 
-    habilitarCamara(){
-        this.setState({
-            camera: true
-        })
-        
-    }
+
 
     onImageUpload(url) {
         console.log(url)
         this.setState({
             foto: url,
-            camera: false
+            mostrarCamera: false
         })
     }
 
-registrarUsuario(email,pass, userName, bio){
-console.log(this.state.foto)
+registrarUsuario(email,pass, userName, bio, foto){
+
     auth.createUserWithEmailAndPassword(email,pass)
         .then(res =>{
                 db.collection("users").add({
@@ -49,7 +44,7 @@ console.log(this.state.foto)
                     userName: userName, 
                     bio: bio,
                     createdAt: Date.now(),
-                    fotoPerfil: this.state.foto
+                    fotoPerfil: foto
                 })
                 .then(()=>{
                     this.setState({
@@ -73,7 +68,7 @@ console.log(this.state.foto)
     
 
     render(){
-        console.log(this.state.foto)
+      
         return(
             <View style={styles.inputs}>
                 <View>  
@@ -111,11 +106,18 @@ console.log(this.state.foto)
                         value = {this.state.descripción}
                         
                     />   
-                    <TouchableOpacity   onPress={()=> this.habilitarCamara()} >
-                    <Text>Agregar una foto de perfil</Text>
-                </TouchableOpacity>
-
-                 {this.state.camera? <Camara onImageUpload={(url)=> this.onImageUpload(url)}/>:<Text></Text>}
+                
+             
+                 {
+                     this.state.mostrarCamera ?
+                     <View>
+                         <Camara onImageUpload={url => this.onImageUpload(url)} style={{width: "15vw", heigth: "15vh", alignItems: 'center'}}/>
+                          </View> 
+                          :
+                          <TouchableOpacity onPress={()=> this.setState({mostrarCamera:true})}>
+                            <Text> Subir foto de perfil</Text>
+                        </TouchableOpacity>
+                 }
             
 
 

@@ -13,23 +13,6 @@ class Posteos extends Component {
             likeado: false,
             comentarios: false,
 
-
-        }
-    }
-
-    componentDidMount() {
-        let likes = this.props.data.data.likes;
-        
-        if(likes.includes(auth.currentUser.email)
-        ){
-            this.setState({
-                likeado: true
-            })
-        }
-        else{
-            this.setState({
-                likeado: false
-            })
         }
     }
 
@@ -73,21 +56,20 @@ class Posteos extends Component {
     }
 
     render() { 
-        // console.log(this.props.data)
-        // let data = this.props.data.data  
-        // console.log(data)
-        // /*let {data} = item*/
+       console.log(this.props.data.data.foto)
         return (
             <View>
                 <Image
                 source={{uri:`${this.props.data.data.foto}`}}
-                style={{width:"100", flex:1, height: 200}}
+                style={styles.imagen}
+
                 />
                 <Text> Titulo: {this.props.data.data.titulo} </Text>
                 <Text> Descripcion: {this.props.data.data.descripcion} </Text>
                 <Text> Likes {this.props.data.data.likes.length} </Text>
 
-                {this.state.likeado? <TouchableOpacity onPress={()=> this.like()}> 
+                {this.state.likeado? 
+                <TouchableOpacity onPress={()=> this.like()}> 
                 <FontAwesome name='heart' color='red' size={14} />
                 </TouchableOpacity>:<TouchableOpacity onPress={()=> this.like()}> 
                 <FontAwesome name='heart-o' color='red' size={14} />
@@ -98,9 +80,7 @@ class Posteos extends Component {
                 >
                 <Text>Ver el comentario</Text> 
                 </TouchableOpacity>
-                {/* <TouchableOpacity onPress={()=> this.verComentarios()}> 
-                    <Text> Ver comentarios </Text>
-                </TouchableOpacity> */}
+            
                 {this.state.comentarios? <View> <Comentarios cerrarComentario={()=>this.cerrarComentario()} /> </View> :<Text></Text>}
                 <FlatList data={this.props.data.data.comentarios.slice(-5,-1)}
                     keyExtractor={(data)=> data.createdAt}
@@ -116,7 +96,14 @@ class Posteos extends Component {
 
     }
 }
-
+const styles = StyleSheet.create({
+    imagen: {
+        width:"100%",
+        height:300,
+        alignContent:"center",
+        marginVertical:10,
+    }
+})
 
 
 

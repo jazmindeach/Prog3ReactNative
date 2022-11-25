@@ -96,4 +96,4 @@ class CrearPosteo extends Component {
 
 
 
-export default CrearPosteo;
+export default CrearPosteo

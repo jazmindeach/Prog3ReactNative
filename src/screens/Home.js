@@ -39,29 +39,26 @@ class Home extends Component {
     render() {
         console.log(this.state.post)
         return (
-            <>
-            { this.state.cargado == false?<ActivityIndicator size="large" color="black" />: 
-            <View style={styles.container}>
+          
+                <View style={styles.container}>
                 
                 <Text style={styles.title}> Home</Text>
-                <TouchableOpacity onPress={ () => this.desloguearse ()}>
-                        <Text>Cerrar sesión</Text>
-                    </TouchableOpacity>
+    
                 <Text onPress={ () => this.props.navigation.navigate ("Crear Posteo")}> Crear un posteo </Text>
                 <Text onPress={ () => this.props.navigation.navigate ("Mi Perfil")}> Ver mi perfil</Text>
+                
                 <Text> Estos son tus posteos:</Text>
                 <FlatList data={this.state.post}
-                    keyExtractor={(data)=> data.id}
-                    renderItem={({item})=> <Posteos data={item}{...this.props}/>}
+                    keyExtractor={(onePost)=> onePost.id.toString()}
+                    renderItem={({item})=> <Posteos data={item} navigation={this.props.navigation}/>}
                     > 
-                    
                 </FlatList>
                 
             </View>
-            } </>
-        )
+            
+        
 
-    }
+        )}
 }
 
 const styles = StyleSheet.create ({
